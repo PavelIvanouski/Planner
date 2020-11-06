@@ -5,14 +5,15 @@ import by.planner.domain.Performable;
 public abstract class TaskToPerform implements Performable{
 
     private String name;
-    private String category;
-    private String priority;
+    //private String category;
+    private Category category;
+    private Priority priority;
     private String dateOfComplition;
     private boolean completed;
     private int timeToComplete;
 
 
-    public TaskToPerform(String name, String category, String priority,
+    public TaskToPerform(String name, Category category, Priority priority,
                          String dateOfComplition, int timeToComplete){
         this.name = name;
         this.category = category;
@@ -43,19 +44,20 @@ public abstract class TaskToPerform implements Performable{
         this.name = name;
     }
 
-    public String getCategory(){
+
+    public Category getCategory(){
         return category;
     }
 
-    public void setCategory(String category){
+    public void setCategory(Category category){
         this.category = category;
     }
 
-    public String getPriority(){
+    public Priority getPriority(){
         return priority;
     }
 
-    public void setPriority(String priority){
+    public void setPriority(Priority priority){
         this.priority = priority;
     }
 

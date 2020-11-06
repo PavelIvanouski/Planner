@@ -1,12 +1,14 @@
 package by.planner.domain.impl;
 
+import by.planner.domain.Category;
+import by.planner.domain.Priority;
 import by.planner.domain.TaskToPerform;
 
 public class RepeatableTask extends TaskToPerform{
 
     private int numberOfRepeats;
 
-    public RepeatableTask(String name, String category, String priority, String dateOfComplition,
+    public RepeatableTask(String name, Category category, Priority priority, String dateOfComplition,
                           int timeToComplete, int numberOfRepeats){
         super(name, category, priority, dateOfComplition, timeToComplete);
         this.numberOfRepeats = numberOfRepeats;
