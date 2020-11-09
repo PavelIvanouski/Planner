@@ -4,6 +4,7 @@ import by.planner.domain.Category;
 import by.planner.domain.Priority;
 import by.planner.domain.TaskToPerform;
 
+/*
 public class RepeatableTask extends TaskToPerform{
 
     private int numberOfRepeats;
@@ -26,3 +27,4 @@ public class RepeatableTask extends TaskToPerform{
                 ", number of repeats=" + numberOfRepeats;
     }
 }
+*/
