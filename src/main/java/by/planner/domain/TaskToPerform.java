@@ -1,6 +1,6 @@
 package by.planner.domain;
 
-public class TaskToPerform implements Performable{
+public class TaskToPerform<T> implements Performable{
 
     private String name;
     private Category category;
@@ -10,8 +10,9 @@ public class TaskToPerform implements Performable{
     private boolean completed;
     private int timeToComplete;
     private int numberOfRepeats;
+    private T id;
 
-    public static class Builder{
+    public static class Builder<T>{
 
         private String name;
         private Category category;
@@ -21,6 +22,7 @@ public class TaskToPerform implements Performable{
         private boolean completed;
         private int timeToComplete;
         private int numberOfRepeats;
+        private T id;
 
         public Builder withName(String name){
             this.name = name;
@@ -57,6 +59,11 @@ public class TaskToPerform implements Performable{
             return this;
         }
 
+        public Builder withId(T id){
+            this.id = id;
+            return this;
+        }
+
         public TaskToPerform build(){
             TaskToPerform taskToPerform = new TaskToPerform();
             taskToPerform.name = this.name;
@@ -66,19 +73,28 @@ public class TaskToPerform implements Performable{
             taskToPerform.dateOfComplition = this.dateOfComplition;
             taskToPerform.timeToComplete = this.timeToComplete;
             taskToPerform.numberOfRepeats = this.numberOfRepeats;
+            taskToPerform.id = this.id;
             return taskToPerform;
         }
     }
 
+    public TaskToPerform(){
 
-    /*public TaskToPerform(String name, Category category, Priority priority,
+    }
+
+
+    /*public TaskToPerform (String name){
+        this.name = name;
+    }*/
+
+    public TaskToPerform(String name, Category category, Priority priority,
                          String dateOfComplition, int timeToComplete){
         this.name = name;
         this.category = category;
         this.priority = priority;
         this.dateOfComplition = dateOfComplition;
         this.timeToComplete = timeToComplete;
-    }*/
+    }
 
     public int perform(){
         System.out.println("The task '" + name + "' is performed.");
@@ -140,6 +156,15 @@ public class TaskToPerform implements Performable{
     public void setTimeToComplete(int timeToComplete){
         this.timeToComplete = timeToComplete;
     }
+
+    public T getId(){
+        return id;
+    }
+
+    public void setId(T id){
+        this.id = id;
+    }
+
     //endregion
 
 
@@ -152,6 +177,7 @@ public class TaskToPerform implements Performable{
                 (taskType.equals(TaskType.REPEATABLE) ? (", number of repeats=" +
                         (numberOfRepeats == 0 ? 1 : numberOfRepeats)) : "") +
                 ", date Of comp.='" + dateOfComplition + '\'' +
-                ", time to complete=" + timeToComplete + " (min)";
+                ", time to complete=" + timeToComplete + " (min)" +
+                ", id=" + id;
     }
 }
