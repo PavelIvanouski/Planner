@@ -87,13 +87,15 @@ public class TaskToPerform<T> implements Performable{
         this.name = name;
     }*/
 
-    public TaskToPerform(String name, Category category, Priority priority,
-                         String dateOfComplition, int timeToComplete){
+    public TaskToPerform(String name, Category category, Priority priority, TaskType taskType,
+                         String dateOfComplition, int timeToComplete, T id){
         this.name = name;
         this.category = category;
         this.priority = priority;
+        this.taskType = taskType;
         this.dateOfComplition = dateOfComplition;
         this.timeToComplete = timeToComplete;
+        this.id = id;
     }
 
     public int perform(){
