@@ -1,5 +1,8 @@
 package by.planner.domain;
 
+import java.util.Objects;
+import java.util.Scanner;
+
 public class TaskToPerform<T> implements Performable{
 
     private String name;
@@ -169,6 +172,66 @@ public class TaskToPerform<T> implements Performable{
 
     //endregion
 
+//    @Override
+//    public boolean equals(Object o){
+//        if (this == o) return true;
+//        if (o == null || getClass() != o.getClass()) return false;
+//        TaskToPerform<?> that = (TaskToPerform<?>) o;
+//        return timeToComplete == that.timeToComplete &&
+//                numberOfRepeats == that.numberOfRepeats &&
+//                Objects.equals(name, that.name) &&
+//                category == that.category &&
+//                priority == that.priority &&
+//                taskType == that.taskType &&
+//                Objects.equals(dateOfComplition, that.dateOfComplition) &&
+//                Objects.equals(id, that.id);
+//    }
+
+//    @Override
+//    public int hashCode(){
+//        return Objects.hash(name, category, priority, taskType,
+//                dateOfComplition, timeToComplete, numberOfRepeats, id);
+//    }
+
+
+    @Override
+    public boolean equals(Object o){
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        TaskToPerform<?> that = (TaskToPerform<?>) o;
+        return timeToComplete == that.timeToComplete &&
+                numberOfRepeats == that.numberOfRepeats &&
+//                name.equals(that.name) &&
+                (name == that.name || (name != null && name.equals(that.name))) &&
+                category == that.category &&
+                priority == that.priority &&
+                taskType == that.taskType &&
+//                dateOfComplition.equals(that.dateOfComplition) &&
+                (dateOfComplition == that.dateOfComplition ||
+                        (dateOfComplition != null && dateOfComplition.equals(that.dateOfComplition))) &&
+                id.equals(that.id);
+    }
+
+    @Override
+    public int hashCode(){
+        int result = 17;
+        result = 37 * result + (name == null ? 0 : name.hashCode());
+        result = 37 * result + (category == null ? 0 : category.hashCode());
+        result = 37 * result + (priority == null ? 0 : priority.hashCode());
+        result = 37 * result + (taskType == null ? 0 : taskType.hashCode());
+        result = 37 * result + (dateOfComplition == null ? 0 : dateOfComplition.hashCode());
+        result = 37 * result + timeToComplete;
+        result = 37 * result + numberOfRepeats;
+//        if (id instanceof Integer) {
+//            result = 37 * result + (int) id;
+//        } else if (id instanceof String) {
+//            result = 37 * result + id.hashCode();
+//        }
+        result = 37 * result + id.hashCode();
+        return result;
+    }
+
+//
 
     @Override
     public String toString(){
@@ -182,4 +245,75 @@ public class TaskToPerform<T> implements Performable{
                 ", time to complete=" + timeToComplete + " (min)" +
                 ", id=" + id;
     }
+
+
+    public static TaskToPerform addNewTask(Scanner scanner){
+        System.out.println("Enter task name:");
+        String taskName = scanner.next();
+        System.out.println("Enter category");
+        System.out.println("1 - CHILLOUT, 2 - HOMEWORK, 3 - STUDY, 4 - WORK :");
+        int categoryNum = scanner.nextInt();
+        System.out.println("Enter priority");
+        System.out.println("1 - IMPORTANT, 2 - OPTIONAL, 3 - MIDDLE:");
+        int priorityNum = scanner.nextInt();
+        System.out.println("Enter task type");
+        System.out.println("1 - ONE_TIME, 2 - REPEATABLE:");
+        int typeNum = scanner.nextInt();
+        System.out.println("Enter String id:");
+        String idStr = scanner.next();
+
+        TaskToPerform.Builder<String> builder = new TaskToPerform.Builder<>();
+        builder.withName(taskName);
+        Category categoryNewTask;
+        switch (categoryNum) {
+            case 1:
+                categoryNewTask = Category.CHILLOUT;
+                break;
+            case 2:
+                categoryNewTask = Category.HOMEWORK;
+                break;
+            case 3:
+                categoryNewTask = Category.STUDY;
+                break;
+            case 4:
+                categoryNewTask = Category.WORK;
+                break;
+            default:
+                categoryNewTask = null;
+        }
+        builder.withCategory(categoryNewTask);
+        Priority priorityNewTask;
+        switch (priorityNum) {
+            case 1:
+                priorityNewTask = Priority.IMPORTANT;
+                break;
+            case 2:
+                priorityNewTask = Priority.OPTIONAL;
+                break;
+            case 3:
+                priorityNewTask = Priority.MIDDLE;
+                break;
+            default:
+                priorityNewTask = null;
+        }
+        builder.withPriority(priorityNewTask);
+        TaskType taskTypeNewTask;
+        switch (typeNum) {
+            case 1:
+                taskTypeNewTask = TaskType.ONE_TIME;
+                break;
+            case 2:
+                taskTypeNewTask = TaskType.REPEATABLE;
+                break;
+            default:
+                taskTypeNewTask = null;
+        }
+        builder.withTaskType(taskTypeNewTask);
+//        builder.withDateOfComplition("09/11");
+//        builder.withTimeToComplete(120);
+        builder.withId(idStr);
+        TaskToPerform<Integer> newTask = builder.build();
+        return newTask;
+    }
+
 }
