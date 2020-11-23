@@ -3,7 +3,7 @@ package by.planner.domain;
 import java.util.Objects;
 import java.util.Scanner;
 
-public class TaskToPerform<T> implements Performable{
+public class TaskToPerform<T> implements Performable, Comparable<TaskToPerform>{
 
     private String name;
     private Category category;
@@ -11,7 +11,7 @@ public class TaskToPerform<T> implements Performable{
     private TaskType taskType;
     private String dateOfComplition;
     private boolean completed;
-    private int timeToComplete;
+    private Integer timeToComplete;
     private int numberOfRepeats;
     private T id;
 
@@ -154,7 +154,7 @@ public class TaskToPerform<T> implements Performable{
         this.dateOfComplition = dateOfComplition;
     }
 
-    public int getTimeToComplete(){
+    public Integer getTimeToComplete(){
         return timeToComplete;
     }
 
@@ -193,6 +193,15 @@ public class TaskToPerform<T> implements Performable{
 //                dateOfComplition, timeToComplete, numberOfRepeats, id);
 //    }
 
+
+    @Override
+    public int compareTo(TaskToPerform o){
+        int result = this.name.compareTo(o.name);
+        if (result == 0) {
+            result = this.timeToComplete.compareTo(o.timeToComplete);
+        }
+        return result;
+    }
 
     @Override
     public boolean equals(Object o){
