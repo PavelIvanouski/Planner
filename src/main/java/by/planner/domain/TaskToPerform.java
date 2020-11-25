@@ -1,5 +1,6 @@
 package by.planner.domain;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Scanner;
 
@@ -12,7 +13,7 @@ public class TaskToPerform<T> implements Performable, Comparable<TaskToPerform>{
     private String dateOfComplition;
     private boolean completed;
     private Integer timeToComplete;
-    private int numberOfRepeats;
+    private Integer numberOfRepeats;
     private T id;
 
     public static class Builder<T>{
@@ -85,11 +86,6 @@ public class TaskToPerform<T> implements Performable, Comparable<TaskToPerform>{
 
     }
 
-
-    /*public TaskToPerform (String name){
-        this.name = name;
-    }*/
-
     public TaskToPerform(String name, Category category, Priority priority, TaskType taskType,
                          String dateOfComplition, int timeToComplete, T id){
         this.name = name;
@@ -129,7 +125,6 @@ public class TaskToPerform<T> implements Performable, Comparable<TaskToPerform>{
         this.name = name;
     }
 
-
     public Category getCategory(){
         return category;
     }
@@ -146,6 +141,14 @@ public class TaskToPerform<T> implements Performable, Comparable<TaskToPerform>{
         this.priority = priority;
     }
 
+    public TaskType getTaskType(){
+        return taskType;
+    }
+
+    public void setTaskType(TaskType taskType){
+        this.taskType = taskType;
+    }
+
     public String getDateOfComplition(){
         return dateOfComplition;
     }
@@ -154,12 +157,28 @@ public class TaskToPerform<T> implements Performable, Comparable<TaskToPerform>{
         this.dateOfComplition = dateOfComplition;
     }
 
+    public boolean isCompleted(){
+        return completed;
+    }
+
+    public void setCompleted(boolean completed){
+        this.completed = completed;
+    }
+
     public Integer getTimeToComplete(){
         return timeToComplete;
     }
 
-    public void setTimeToComplete(int timeToComplete){
+    public void setTimeToComplete(Integer timeToComplete){
         this.timeToComplete = timeToComplete;
+    }
+
+    public Integer getNumberOfRepeats(){
+        return numberOfRepeats;
+    }
+
+    public void setNumberOfRepeats(Integer numberOfRepeats){
+        this.numberOfRepeats = numberOfRepeats;
     }
 
     public T getId(){
@@ -169,30 +188,32 @@ public class TaskToPerform<T> implements Performable, Comparable<TaskToPerform>{
     public void setId(T id){
         this.id = id;
     }
-
     //endregion
 
-//    @Override
-//    public boolean equals(Object o){
-//        if (this == o) return true;
-//        if (o == null || getClass() != o.getClass()) return false;
-//        TaskToPerform<?> that = (TaskToPerform<?>) o;
-//        return timeToComplete == that.timeToComplete &&
-//                numberOfRepeats == that.numberOfRepeats &&
-//                Objects.equals(name, that.name) &&
-//                category == that.category &&
-//                priority == that.priority &&
-//                taskType == that.taskType &&
-//                Objects.equals(dateOfComplition, that.dateOfComplition) &&
-//                Objects.equals(id, that.id);
-//    }
+    @Override
+    public boolean equals(Object o){
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        TaskToPerform<?> that = (TaskToPerform<?>) o;
+        return (numberOfRepeats == that.numberOfRepeats)
+                && (name.equals(that.name))
+                && (category == that.category)
+                && (priority == that.priority)
+                && (taskType == that.taskType)
+                && (dateOfComplition.equals(that.dateOfComplition))
+                && (timeToComplete.equals(that.timeToComplete))
+                && (id.equals(that.id));
+    }
 
-//    @Override
-//    public int hashCode(){
-//        return Objects.hash(name, category, priority, taskType,
-//                dateOfComplition, timeToComplete, numberOfRepeats, id);
-//    }
-
+    @Override
+    public int hashCode(){
+        return Objects.hash(name, category, priority, taskType, dateOfComplition,
+                timeToComplete, numberOfRepeats, id);
+    }
 
     @Override
     public int compareTo(TaskToPerform o){
@@ -204,45 +225,6 @@ public class TaskToPerform<T> implements Performable, Comparable<TaskToPerform>{
     }
 
     @Override
-    public boolean equals(Object o){
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        TaskToPerform<?> that = (TaskToPerform<?>) o;
-        return timeToComplete == that.timeToComplete &&
-                numberOfRepeats == that.numberOfRepeats &&
-//                name.equals(that.name) &&
-                (name == that.name || (name != null && name.equals(that.name))) &&
-                category == that.category &&
-                priority == that.priority &&
-                taskType == that.taskType &&
-//                dateOfComplition.equals(that.dateOfComplition) &&
-                (dateOfComplition == that.dateOfComplition ||
-                        (dateOfComplition != null && dateOfComplition.equals(that.dateOfComplition))) &&
-                id.equals(that.id);
-    }
-
-    @Override
-    public int hashCode(){
-        int result = 17;
-        result = 37 * result + (name == null ? 0 : name.hashCode());
-        result = 37 * result + (category == null ? 0 : category.hashCode());
-        result = 37 * result + (priority == null ? 0 : priority.hashCode());
-        result = 37 * result + (taskType == null ? 0 : taskType.hashCode());
-        result = 37 * result + (dateOfComplition == null ? 0 : dateOfComplition.hashCode());
-        result = 37 * result + timeToComplete;
-        result = 37 * result + numberOfRepeats;
-//        if (id instanceof Integer) {
-//            result = 37 * result + (int) id;
-//        } else if (id instanceof String) {
-//            result = 37 * result + id.hashCode();
-//        }
-        result = 37 * result + id.hashCode();
-        return result;
-    }
-
-//
-
-    @Override
     public String toString(){
         return "Task: name='" + name + '\'' +
                 ", category='" + category + '\'' +
@@ -251,14 +233,13 @@ public class TaskToPerform<T> implements Performable, Comparable<TaskToPerform>{
                 (taskType.equals(TaskType.REPEATABLE) ? (", number of repeats=" +
                         (numberOfRepeats == 0 ? 1 : numberOfRepeats)) : "") +
                 ", date Of comp.='" + dateOfComplition + '\'' +
-                ", time to complete=" + timeToComplete + " (min)" +
+                ", time to complete=" + timeToComplete + " (min)" + '\'' +
                 ", id=" + id;
     }
 
-
-    public static TaskToPerform addNewTask(Scanner scanner){
+    public static void addNewTask(Scanner scanner, List list){
         System.out.println("Enter task name:");
-        String taskName = scanner.next();
+        String taskName = scanner.nextLine();
         System.out.println("Enter category");
         System.out.println("1 - CHILLOUT, 2 - HOMEWORK, 3 - STUDY, 4 - WORK :");
         int categoryNum = scanner.nextInt();
@@ -268,10 +249,13 @@ public class TaskToPerform<T> implements Performable, Comparable<TaskToPerform>{
         System.out.println("Enter task type");
         System.out.println("1 - ONE_TIME, 2 - REPEATABLE:");
         int typeNum = scanner.nextInt();
-        System.out.println("Enter String id:");
-        String idStr = scanner.next();
 
-        TaskToPerform.Builder<String> builder = new TaskToPerform.Builder<>();
+        System.out.println("Enter time to complete:");
+        int timeToComplete = scanner.nextInt();
+        System.out.println("Enter Integer id:");
+        int idInteger = scanner.nextInt();
+
+        TaskToPerform.Builder<Integer> builder = new TaskToPerform.Builder<>();
         builder.withName(taskName);
         Category categoryNewTask;
         switch (categoryNum) {
@@ -289,6 +273,7 @@ public class TaskToPerform<T> implements Performable, Comparable<TaskToPerform>{
                 break;
             default:
                 categoryNewTask = null;
+                break;
         }
         builder.withCategory(categoryNewTask);
         Priority priorityNewTask;
@@ -304,6 +289,7 @@ public class TaskToPerform<T> implements Performable, Comparable<TaskToPerform>{
                 break;
             default:
                 priorityNewTask = null;
+                break;
         }
         builder.withPriority(priorityNewTask);
         TaskType taskTypeNewTask;
@@ -313,16 +299,22 @@ public class TaskToPerform<T> implements Performable, Comparable<TaskToPerform>{
                 break;
             case 2:
                 taskTypeNewTask = TaskType.REPEATABLE;
+                System.out.println("Enter number of repeats:");
+                int numberOfRepeats = scanner.nextInt();
+                builder.withNumberOfRepeats(numberOfRepeats);
                 break;
             default:
                 taskTypeNewTask = null;
+                break;
         }
         builder.withTaskType(taskTypeNewTask);
-//        builder.withDateOfComplition("09/11");
-//        builder.withTimeToComplete(120);
-        builder.withId(idStr);
+        builder.withDateOfComplition("24/11");
+        builder.withTimeToComplete(timeToComplete);
+        builder.withId(idInteger);
         TaskToPerform<Integer> newTask = builder.build();
-        return newTask;
+        list.add(newTask);
+        System.out.println(newTask + " added.");
+        scanner.nextLine();
     }
 
 }
