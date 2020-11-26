@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Scanner;
 
-public class TaskToPerform<T> implements Performable, Comparable<TaskToPerform>{
+public class TaskToPerform<T> implements Performable, Comparable<TaskToPerform> {
 
     private String name;
     private Category category;
@@ -237,7 +237,7 @@ public class TaskToPerform<T> implements Performable, Comparable<TaskToPerform>{
                 ", id=" + id;
     }
 
-    public static void addNewTask(Scanner scanner, List list){
+    public static void addNewTask (Scanner scanner, List list) throws TaskCheckedExeption{
         System.out.println("Enter task name:");
         String taskName = scanner.nextLine();
         System.out.println("Enter category");
@@ -274,6 +274,9 @@ public class TaskToPerform<T> implements Performable, Comparable<TaskToPerform>{
             default:
                 categoryNewTask = null;
                 break;
+        }
+        if (categoryNum > 4) {
+            throw new TaskCheckedExeption("Task " + taskName + " has no category!");
         }
         builder.withCategory(categoryNewTask);
         Priority priorityNewTask;

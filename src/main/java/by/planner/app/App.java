@@ -6,7 +6,7 @@ import java.util.*;
 
 
 public class App{
-    public static void main(String[] args){
+    public static void main(String[] args) throws TaskCheckedExeption{
         TaskToPerform.Builder<Integer> builder1 = new TaskToPerform.Builder<>();
         builder1.withName("To watch a movie");
         builder1.withCategory(Category.CHILLOUT);
@@ -58,7 +58,12 @@ public class App{
                     break;
                 case "a":
                     System.out.println("Pressed 'a':");
-                    TaskToPerform.addNewTask(scanner, taskToPerformList);
+                    try {
+                        TaskToPerform.addNewTask(scanner, taskToPerformList);
+
+                    } catch (TaskCheckedExeption exeption) {
+
+                    }
                     break;
                 case "s":
                     System.out.println("Pressed 's':");
