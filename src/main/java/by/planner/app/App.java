@@ -1,12 +1,15 @@
 package by.planner.app;
 
 import by.planner.domain.*;
+import by.planner.domain.features.Category;
+import by.planner.domain.features.Priority;
+import by.planner.domain.features.TaskType;
 
 import java.util.*;
 
 
 public class App{
-    public static void main(String[] args) throws TaskCheckedExeption{
+    public static void main(String[] args){
         TaskToPerform.Builder<Integer> builder1 = new TaskToPerform.Builder<>();
         builder1.withName("To watch a movie");
         builder1.withCategory(Category.CHILLOUT);
@@ -58,12 +61,7 @@ public class App{
                     break;
                 case "a":
                     System.out.println("Pressed 'a':");
-                    try {
-                        TaskToPerform.addNewTask(scanner, taskToPerformList);
-
-                    } catch (TaskCheckedExeption exeption) {
-
-                    }
+                    TaskToPerform.addNewTask(scanner, taskToPerformList);
                     break;
                 case "s":
                     System.out.println("Pressed 's':");

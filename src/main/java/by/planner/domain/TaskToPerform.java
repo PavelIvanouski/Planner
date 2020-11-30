@@ -1,10 +1,18 @@
 package by.planner.domain;
 
+import by.planner.domain.exceptions.TaskCheckedException;
+import by.planner.domain.exceptions.TaskUncheckedException;
+import by.planner.domain.features.Category;
+import by.planner.domain.features.Priority;
+import by.planner.domain.features.ReturnFeature;
+import by.planner.domain.features.TaskType;
+
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Scanner;
 
-public class TaskToPerform<T> implements Performable, Comparable<TaskToPerform> {
+public class TaskToPerform<T> implements Performable, Comparable<TaskToPerform>{
 
     private String name;
     private Category category;
@@ -237,64 +245,50 @@ public class TaskToPerform<T> implements Performable, Comparable<TaskToPerform> 
                 ", id=" + id;
     }
 
-    public static void addNewTask (Scanner scanner, List list) throws TaskCheckedExeption{
+    public static void addNewTask(Scanner scanner, List list) throws TaskUncheckedException{
+        TaskToPerform.Builder<Integer> builder = new TaskToPerform.Builder<>();
+
         System.out.println("Enter task name:");
         String taskName = scanner.nextLine();
+        builder.withName(taskName);
+
         System.out.println("Enter category");
         System.out.println("1 - CHILLOUT, 2 - HOMEWORK, 3 - STUDY, 4 - WORK :");
         int categoryNum = scanner.nextInt();
+
+        Category categoryNewTask;
+        categoryNewTask = null;
+        try {
+            categoryNewTask = ReturnFeature.returnCategory(categoryNum);
+        } catch (TaskCheckedException e) {
+            e.printStackTrace();
+            categoryNewTask = Category.CHILLOUT;
+        } finally {
+            builder.withCategory(categoryNewTask);
+        }
+
         System.out.println("Enter priority");
         System.out.println("1 - IMPORTANT, 2 - OPTIONAL, 3 - MIDDLE:");
         int priorityNum = scanner.nextInt();
+        Priority priorityNewTask;
+        try {
+            priorityNewTask = ReturnFeature.returnPriority(priorityNum);
+        } catch (Exception e) {
+            e.printStackTrace();
+            priorityNewTask = Priority.MIDDLE;
+        }
+        builder.withPriority(priorityNewTask);
+
+
         System.out.println("Enter task type");
         System.out.println("1 - ONE_TIME, 2 - REPEATABLE:");
         int typeNum = scanner.nextInt();
-
-        System.out.println("Enter time to complete:");
-        int timeToComplete = scanner.nextInt();
-        System.out.println("Enter Integer id:");
-        int idInteger = scanner.nextInt();
-
-        TaskToPerform.Builder<Integer> builder = new TaskToPerform.Builder<>();
-        builder.withName(taskName);
-        Category categoryNewTask;
-        switch (categoryNum) {
-            case 1:
-                categoryNewTask = Category.CHILLOUT;
-                break;
-            case 2:
-                categoryNewTask = Category.HOMEWORK;
-                break;
-            case 3:
-                categoryNewTask = Category.STUDY;
-                break;
-            case 4:
-                categoryNewTask = Category.WORK;
-                break;
-            default:
-                categoryNewTask = null;
-                break;
+        if (typeNum < 1 || typeNum > 2) {
+            typeNum = 1;
         }
-        if (categoryNum > 4) {
-            throw new TaskCheckedExeption("Task " + taskName + " has no category!");
+        if (typeNum != 1 && typeNum != 2) {
+            throw new TaskUncheckedException();
         }
-        builder.withCategory(categoryNewTask);
-        Priority priorityNewTask;
-        switch (priorityNum) {
-            case 1:
-                priorityNewTask = Priority.IMPORTANT;
-                break;
-            case 2:
-                priorityNewTask = Priority.OPTIONAL;
-                break;
-            case 3:
-                priorityNewTask = Priority.MIDDLE;
-                break;
-            default:
-                priorityNewTask = null;
-                break;
-        }
-        builder.withPriority(priorityNewTask);
         TaskType taskTypeNewTask;
         switch (typeNum) {
             case 1:
@@ -311,13 +305,41 @@ public class TaskToPerform<T> implements Performable, Comparable<TaskToPerform> 
                 break;
         }
         builder.withTaskType(taskTypeNewTask);
-        builder.withDateOfComplition("24/11");
+
+        int timeToComplete = 0;
+        do {
+            System.out.println("Enter time to complete (positive number):");
+            try {
+                timeToComplete = scanner.nextInt();
+            } catch (InputMismatchException e) {
+                e.printStackTrace();
+                System.out.println("Try again.");
+                scanner.next();
+            }
+        } while (timeToComplete <= 0);
         builder.withTimeToComplete(timeToComplete);
+
+        int idInteger = 0;
+        do {
+            System.out.println("Enter Integer id:");
+            try {
+                idInteger = scanner.nextInt();
+            } catch (InputMismatchException e) {
+                e.printStackTrace();
+                System.out.println("Try again.");
+                scanner.next();
+            }
+        } while (idInteger <= 0);
         builder.withId(idInteger);
+
+        builder.withDateOfComplition("30/11");
+
         TaskToPerform<Integer> newTask = builder.build();
+
         list.add(newTask);
         System.out.println(newTask + " added.");
         scanner.nextLine();
     }
+
 
 }
