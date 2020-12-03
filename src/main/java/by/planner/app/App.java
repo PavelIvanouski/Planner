@@ -6,6 +6,7 @@ import by.planner.domain.features.Priority;
 import by.planner.domain.features.TaskType;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 public class App{
@@ -36,8 +37,8 @@ public class App{
         builder3.withPriority(Priority.IMPORTANT);
         builder3.withTaskType(TaskType.ONE_TIME);
         builder3.withDateOfComplition("09/11");
-        builder3.withTimeToComplete(10);
-        builder3.withId(16);
+        builder3.withTimeToComplete(120);
+        builder3.withId(13133);
         TaskToPerform<Integer> Task3 = builder3.build();
 
 
@@ -51,7 +52,12 @@ public class App{
         String pressedKey = "";
         while (!pressedKey.equals("x")) {
             System.out.println();
-            System.out.println("Press \'p\' to print; \'a\' to add; \'s\' to sort; \'x\' to exit");
+            System.out.println("Press \'p\' to print; \'a\' to add; \'x\' to exit");
+            System.out.println("\'s\' to sort tasks");
+            System.out.println("\'f\' to filter by priority - show all IMPORTANT tasks");
+            System.out.println("\'r\' to remove dublicate tasks ");
+            System.out.println("\'n\' to show all task names");
+            System.out.println("\'m\' to check if all task names are longer than 1 symbol");
             pressedKey = scanner.nextLine();
             switch (pressedKey) {
                 case "p":
@@ -66,12 +72,43 @@ public class App{
                 case "s":
                     System.out.println("Pressed 's':");
                     System.out.println("Sorted tasks:");
-                    SortedSet<TaskToPerform> taskToPerformSortedSet = new TreeSet<>();
-                    taskToPerformSortedSet.addAll(taskToPerformList);
-                    taskToPerformSortedSet.forEach(System.out::println);
+//                    SortedSet<TaskToPerform> taskToPerformSortedSet = new TreeSet<>();
+//                    taskToPerformSortedSet.addAll(taskToPerformList);
+//                    taskToPerformSortedSet.forEach(System.out::println);
+                    taskToPerformList.stream()
+                            .sorted()
+                            .forEach(System.out::println);
                     break;
                 case "x":
                     System.out.println("Pressed 'x'. Exit...");
+                    break;
+                case "f":
+                    System.out.println("Pressed 'f'. All INPORTANT tasks:");
+                    taskToPerformList.stream()
+                            .filter(task -> task.getPriority().equals(Priority.IMPORTANT))
+                            .forEach(System.out::println);
+                    break;
+                case "m":
+                    System.out.println("Pressed 'm'.");
+                    boolean areAllNamesLongerThanOneChar = taskToPerformList.stream()
+                            .allMatch(task -> task.getName().length() > 1);
+                    System.out.println("All task names are longer than one symbol : " + areAllNamesLongerThanOneChar);
+                    break;
+                case "n":
+                    System.out.println("Pressed 'n'.");
+                    System.out.println("All task names:");
+                    taskToPerformList.stream()
+                            .map(task -> task.getName())
+                            .collect(Collectors.toList())
+                            .forEach(System.out::println);
+                    break;
+                case "r":
+                    System.out.println("Pressed 'r'.");
+                    System.out.println("All unique tasks:");
+                    taskToPerformList = taskToPerformList.stream()
+                            .distinct()
+                            .collect(Collectors.toList());
+                    taskToPerformList.forEach(System.out::println);
                     break;
                 default:
                     System.out.println("Invalid command");

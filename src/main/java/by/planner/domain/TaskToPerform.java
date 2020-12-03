@@ -217,11 +217,27 @@ public class TaskToPerform<T> implements Performable, Comparable<TaskToPerform>{
                 && (id.equals(that.id));
     }
 
+//    @Override
+//    public boolean equals(Object o){
+//        if (this == o) {
+//            return true;
+//        }
+//        if (o == null || getClass() != o.getClass()) {
+//            return false;
+//        }
+//        TaskToPerform<?> that = (TaskToPerform<?>) o;
+//        return (name.equals(that.name));
+//    }
+
     @Override
     public int hashCode(){
         return Objects.hash(name, category, priority, taskType, dateOfComplition,
                 timeToComplete, numberOfRepeats, id);
     }
+//    @Override
+//    public int hashCode(){
+//        return Objects.hash(name);
+//    }
 
     @Override
     public int compareTo(TaskToPerform o){
