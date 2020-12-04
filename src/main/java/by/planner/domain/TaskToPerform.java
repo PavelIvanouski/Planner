@@ -7,6 +7,10 @@ import by.planner.domain.features.Priority;
 import by.planner.domain.features.ReturnFeature;
 import by.planner.domain.features.TaskType;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Objects;
@@ -18,7 +22,7 @@ public class TaskToPerform<T> implements Performable, Comparable<TaskToPerform>{
     private Category category;
     private Priority priority;
     private TaskType taskType;
-    private String dateOfComplition;
+    private LocalDateTime dateOfComplition;
     private boolean completed;
     private Integer timeToComplete;
     private Integer numberOfRepeats;
@@ -30,7 +34,7 @@ public class TaskToPerform<T> implements Performable, Comparable<TaskToPerform>{
         private Category category;
         private Priority priority;
         private TaskType taskType;
-        private String dateOfComplition;
+        private LocalDateTime dateOfComplition;
         private boolean completed;
         private int timeToComplete;
         private int numberOfRepeats;
@@ -56,7 +60,7 @@ public class TaskToPerform<T> implements Performable, Comparable<TaskToPerform>{
             return this;
         }
 
-        public Builder withDateOfComplition(String dateOfComplition){
+        public Builder withDateOfComplition(LocalDateTime dateOfComplition){
             this.dateOfComplition = dateOfComplition;
             return this;
         }
@@ -95,7 +99,7 @@ public class TaskToPerform<T> implements Performable, Comparable<TaskToPerform>{
     }
 
     public TaskToPerform(String name, Category category, Priority priority, TaskType taskType,
-                         String dateOfComplition, int timeToComplete, T id){
+                         LocalDateTime dateOfComplition, int timeToComplete, T id){
         this.name = name;
         this.category = category;
         this.priority = priority;
@@ -157,11 +161,11 @@ public class TaskToPerform<T> implements Performable, Comparable<TaskToPerform>{
         this.taskType = taskType;
     }
 
-    public String getDateOfComplition(){
+    public LocalDateTime getDateOfComplition(){
         return dateOfComplition;
     }
 
-    public void setDateOfComplition(String dateOfComplition){
+    public void setDateOfComplition(LocalDateTime dateOfComplition){
         this.dateOfComplition = dateOfComplition;
     }
 
@@ -256,7 +260,8 @@ public class TaskToPerform<T> implements Performable, Comparable<TaskToPerform>{
                 ", task type='" + taskType + '\'' +
                 (taskType.equals(TaskType.REPEATABLE) ? (", number of repeats=" +
                         (numberOfRepeats == 0 ? 1 : numberOfRepeats)) : "") +
-                ", date Of comp.='" + dateOfComplition + '\'' +
+                ", date Of comp.='" +
+                (DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT).format(dateOfComplition)) + '\'' +
                 ", time to complete=" + timeToComplete + " (min)" + '\'' +
                 ", id=" + id;
     }
@@ -348,7 +353,7 @@ public class TaskToPerform<T> implements Performable, Comparable<TaskToPerform>{
         } while (idInteger <= 0);
         builder.withId(idInteger);
 
-        builder.withDateOfComplition("30/11");
+        builder.withDateOfComplition(LocalDateTime.now());
 
         TaskToPerform<Integer> newTask = builder.build();
 

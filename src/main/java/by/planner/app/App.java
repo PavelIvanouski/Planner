@@ -5,18 +5,31 @@ import by.planner.domain.features.Category;
 import by.planner.domain.features.Priority;
 import by.planner.domain.features.TaskType;
 
+import java.time.*;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
 
 
 public class App{
     public static void main(String[] args){
+        LocalDateTime now = LocalDateTime.now();
+        System.out.println("now: " + DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM).format(now));
+        LocalDateTime deadlineDate = LocalDateTime.of(2020, 12, 7, 23, 59);
+        System.out.println("Deadline date: " +
+                DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM).format(deadlineDate));
+
+        System.out.println(returnTwoDateDifference(now, deadlineDate));
+        System.out.println();
+
         TaskToPerform.Builder<Integer> builder1 = new TaskToPerform.Builder<>();
         builder1.withName("To watch a movie");
         builder1.withCategory(Category.CHILLOUT);
         builder1.withPriority(Priority.OPTIONAL);
         builder1.withTaskType(TaskType.ONE_TIME);
-        builder1.withDateOfComplition("09/11");
+        builder1.withDateOfComplition(now);
         builder1.withTimeToComplete(120);
         builder1.withId(13133);
         TaskToPerform<Integer> Task1 = builder1.build();
@@ -26,7 +39,9 @@ public class App{
         builder2.withCategory(Category.CHILLOUT);
         builder2.withPriority(Priority.IMPORTANT);
         builder2.withTaskType(TaskType.ONE_TIME);
-        builder2.withDateOfComplition("09/11");
+        //today evening
+        LocalDateTime todayEvening = LocalDateTime.of(LocalDate.now(), LocalTime.of(23, 00));
+        builder2.withDateOfComplition(todayEvening);
         builder2.withTimeToComplete(120);
         builder2.withId(13133);
         TaskToPerform<Integer> Task2 = builder2.build();
@@ -36,7 +51,8 @@ public class App{
         builder3.withCategory(Category.CHILLOUT);
         builder3.withPriority(Priority.IMPORTANT);
         builder3.withTaskType(TaskType.ONE_TIME);
-        builder3.withDateOfComplition("09/11");
+        //tomorrow evening
+        builder3.withDateOfComplition(todayEvening.plusDays(1));
         builder3.withTimeToComplete(120);
         builder3.withId(13133);
         TaskToPerform<Integer> Task3 = builder3.build();
@@ -128,4 +144,22 @@ public class App{
 
 
     }
+
+    public static String returnTwoDateDifference(LocalDateTime start, LocalDateTime end){
+        Duration duration = Duration.between(start, end);
+        if (duration.toSeconds() < 0) {
+            return "Deadline has already arrived!";
+        }
+        long allSeconds = duration.getSeconds();
+        long days = allSeconds / (24 * 60 * 60);
+        long rest = allSeconds - (days * 24 * 60 * 60);
+        long hours = rest / (60 * 60);
+        long rest1 = rest - hours * (60 * 60);
+        long min = rest1 / 60;
+        long sec = allSeconds % 60;
+        String srtTemplate = "%d day(s) %d hour(s) %d min %d sec to deadline.";
+        String str = String.format(srtTemplate, days, hours, min, sec);
+        return str;
+    }
+
 }
