@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
 
 public class App{
     final static String deadLineDateStr = "2020-12-07T23:59:00";
+
     public static void main(String[] args){
         LocalDateTime now = LocalDateTime.now();
         System.out.println("now: " + DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM).format(now));
@@ -85,7 +86,7 @@ public class App{
                     break;
                 case "a":
                     System.out.println("Pressed 'a':");
-                    TaskToPerform.addNewTask(scanner, taskToPerformList);
+                    TaskToPerform.addNewTask(scanner, taskToPerformList, now);
                     break;
                 case "s":
                     System.out.println("Pressed 's':");

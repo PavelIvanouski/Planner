@@ -73,16 +73,16 @@ public class ReturnFeature{
         return str;
     }
 
-    public static LocalDateTime enterTaskDate(Scanner scanner){
+    public static LocalDateTime enterTaskDate(Scanner scanner, LocalDateTime currentDate){
         LocalDateTime taskDate;
-        int year = checkNumber(scanner, 2020, 2021, "year");
-        int month = checkNumber(scanner, 1, 12, "month");
+        int year = checkNumber(scanner, currentDate.getYear(), currentDate.getYear() + 1, "year");
+        int month = checkNumber(scanner, currentDate.getMonthValue(), 12, "month");
         YearMonth yearMonth = YearMonth.of(year, month);
         int daysInMonth = yearMonth.lengthOfMonth();
-        int day = checkNumber(scanner, 1, daysInMonth, "day");
-        int hour = checkNumber(scanner, 0, 23, "hour");
-        int min = checkNumber(scanner, 0, 59, "minute");
-        taskDate = LocalDateTime.of(year, month, day, hour, min);
+        int day = checkNumber(scanner, currentDate.getDayOfMonth(), daysInMonth, "day");
+        int hour = checkNumber(scanner, currentDate.getHour(), 23, "hour");
+        int minute = checkNumber(scanner, currentDate.getMinute(), 59, "minute");
+        taskDate = LocalDateTime.of(year, month, day, hour, minute);
         return taskDate;
     }
 
