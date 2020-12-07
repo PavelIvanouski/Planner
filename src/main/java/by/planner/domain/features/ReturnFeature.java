@@ -2,6 +2,11 @@ package by.planner.domain.features;
 
 import by.planner.domain.exceptions.TaskCheckedException;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.YearMonth;
+import java.util.Scanner;
+
 public class ReturnFeature{
 
     public static Category returnCategory(int categoryNum) throws TaskCheckedException{
@@ -49,6 +54,50 @@ public class ReturnFeature{
             throw new TaskCheckedException("Invalid priority");
         }
         return priorityNewTask;
+    }
+
+    public static String returnTwoDateDifference(LocalDateTime start, LocalDateTime end){
+        Duration duration = Duration.between(start, end);
+        if (duration.toSeconds() < 0) {
+            return "Deadline has already arrived!";
+        }
+        long allSeconds = duration.getSeconds();
+        long days = allSeconds / (24 * 60 * 60);
+        long rest = allSeconds - (days * 24 * 60 * 60);
+        long hours = rest / (60 * 60);
+        long rest1 = rest - hours * (60 * 60);
+        long min = rest1 / 60;
+        long sec = allSeconds % 60;
+        String srtTemplate = "%d day(s) %d hour(s) %d min %d sec to deadline.";
+        String str = String.format(srtTemplate, days, hours, min, sec);
+        return str;
+    }
+
+    public static LocalDateTime enterTaskDate(Scanner scanner){
+        LocalDateTime taskDate;
+        int year = checkNumber(scanner, 2020, 2021, "year");
+        int month = checkNumber(scanner, 1, 12, "month");
+        YearMonth yearMonth = YearMonth.of(year, month);
+        int daysInMonth = yearMonth.lengthOfMonth();
+        int day = checkNumber(scanner, 1, daysInMonth, "day");
+        int hour = checkNumber(scanner, 0, 23, "hour");
+        int min = checkNumber(scanner, 0, 59, "minute");
+        taskDate = LocalDateTime.of(year, month, day, hour, min);
+        return taskDate;
+    }
+
+    public static int checkNumber(Scanner scanner, int minBound, int maxBound, String datePar){
+        int number;
+        do {
+            System.out.println("Enter " + datePar + " from [" + minBound + ";" + maxBound + "]:");
+            while (!scanner.hasNextInt()) {
+                System.out.println("It is not an integer  number! Try again:");
+                scanner.next();
+            }
+            number = scanner.nextInt();
+        } while (number < minBound || number > maxBound);
+
+        return number;
     }
 
 }

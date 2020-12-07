@@ -352,8 +352,8 @@ public class TaskToPerform<T> implements Performable, Comparable<TaskToPerform>{
             }
         } while (idInteger <= 0);
         builder.withId(idInteger);
-
-        builder.withDateOfComplition(LocalDateTime.now());
+        LocalDateTime taskDate = ReturnFeature.enterTaskDate(scanner);
+        builder.withDateOfComplition(taskDate);
 
         TaskToPerform<Integer> newTask = builder.build();
 

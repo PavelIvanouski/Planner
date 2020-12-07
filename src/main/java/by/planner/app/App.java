@@ -3,6 +3,7 @@ package by.planner.app;
 import by.planner.domain.*;
 import by.planner.domain.features.Category;
 import by.planner.domain.features.Priority;
+import by.planner.domain.features.ReturnFeature;
 import by.planner.domain.features.TaskType;
 
 import java.time.*;
@@ -14,14 +15,15 @@ import java.util.stream.Collectors;
 
 
 public class App{
+    final static String deadLineDateStr = "2020-12-07T23:59:00";
     public static void main(String[] args){
         LocalDateTime now = LocalDateTime.now();
         System.out.println("now: " + DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM).format(now));
-        LocalDateTime deadlineDate = LocalDateTime.of(2020, 12, 7, 23, 59);
+        LocalDateTime deadlineDate = LocalDateTime.parse(deadLineDateStr);
         System.out.println("Deadline date: " +
                 DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM).format(deadlineDate));
 
-        System.out.println(returnTwoDateDifference(now, deadlineDate));
+        System.out.println(ReturnFeature.returnTwoDateDifference(now, deadlineDate));
         System.out.println();
 
         TaskToPerform.Builder<Integer> builder1 = new TaskToPerform.Builder<>();
@@ -145,21 +147,5 @@ public class App{
 
     }
 
-    public static String returnTwoDateDifference(LocalDateTime start, LocalDateTime end){
-        Duration duration = Duration.between(start, end);
-        if (duration.toSeconds() < 0) {
-            return "Deadline has already arrived!";
-        }
-        long allSeconds = duration.getSeconds();
-        long days = allSeconds / (24 * 60 * 60);
-        long rest = allSeconds - (days * 24 * 60 * 60);
-        long hours = rest / (60 * 60);
-        long rest1 = rest - hours * (60 * 60);
-        long min = rest1 / 60;
-        long sec = allSeconds % 60;
-        String srtTemplate = "%d day(s) %d hour(s) %d min %d sec to deadline.";
-        String str = String.format(srtTemplate, days, hours, min, sec);
-        return str;
-    }
 
 }
