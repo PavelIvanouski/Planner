@@ -1,4 +1,4 @@
-package by.planner.domain.exceptions;
+package by.planner.exceptions;
 
 public class TaskCheckedException extends Exception{
     public TaskCheckedException(String message){

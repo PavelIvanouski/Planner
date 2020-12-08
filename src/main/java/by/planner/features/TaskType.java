@@ -1,4 +1,4 @@
-package by.planner.domain.features;
+package by.planner.features;
 
 public enum TaskType{
     ONE_TIME,

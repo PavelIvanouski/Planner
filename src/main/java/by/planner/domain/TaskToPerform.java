@@ -1,13 +1,13 @@
 package by.planner.domain;
 
-import by.planner.domain.exceptions.TaskCheckedException;
-import by.planner.domain.exceptions.TaskUncheckedException;
-import by.planner.domain.features.Category;
-import by.planner.domain.features.Priority;
-import by.planner.domain.features.ReturnFeature;
-import by.planner.domain.features.TaskType;
+import by.planner.exceptions.TaskCheckedException;
+import by.planner.exceptions.TaskUncheckedException;
+import by.planner.features.Category;
+import by.planner.features.Priority;
+import by.planner.util.EnterTaskDateUtil;
+import by.planner.util.ReturnUtil;
+import by.planner.features.TaskType;
 
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
@@ -280,7 +280,7 @@ public class TaskToPerform<T> implements Performable, Comparable<TaskToPerform>{
         Category categoryNewTask;
         categoryNewTask = null;
         try {
-            categoryNewTask = ReturnFeature.returnCategory(categoryNum);
+            categoryNewTask = ReturnUtil.returnCategory(categoryNum);
         } catch (TaskCheckedException e) {
             e.printStackTrace();
             categoryNewTask = Category.CHILLOUT;
@@ -293,7 +293,7 @@ public class TaskToPerform<T> implements Performable, Comparable<TaskToPerform>{
         int priorityNum = scanner.nextInt();
         Priority priorityNewTask;
         try {
-            priorityNewTask = ReturnFeature.returnPriority(priorityNum);
+            priorityNewTask = ReturnUtil.returnPriority(priorityNum);
         } catch (Exception e) {
             e.printStackTrace();
             priorityNewTask = Priority.MIDDLE;
@@ -352,7 +352,7 @@ public class TaskToPerform<T> implements Performable, Comparable<TaskToPerform>{
             }
         } while (idInteger <= 0);
         builder.withId(idInteger);
-        LocalDateTime taskDate = ReturnFeature.enterTaskDate(scanner, currentDate);
+        LocalDateTime taskDate = EnterTaskDateUtil.enterTaskDate(scanner, currentDate);
         builder.withDateOfComplition(taskDate);
 
         TaskToPerform<Integer> newTask = builder.build();
