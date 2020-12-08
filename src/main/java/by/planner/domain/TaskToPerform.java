@@ -266,7 +266,7 @@ public class TaskToPerform<T> implements Performable, Comparable<TaskToPerform>{
                 ", id=" + id;
     }
 
-    public static void addNewTask(Scanner scanner, List list, LocalDateTime currentDate) throws TaskUncheckedException{
+    public static void addNewTask(Scanner scanner, List list) throws TaskUncheckedException{
         TaskToPerform.Builder<Integer> builder = new TaskToPerform.Builder<>();
 
         System.out.println("Enter task name:");
@@ -352,6 +352,7 @@ public class TaskToPerform<T> implements Performable, Comparable<TaskToPerform>{
             }
         } while (idInteger <= 0);
         builder.withId(idInteger);
+        LocalDateTime currentDate = LocalDateTime.now();
         LocalDateTime taskDate = EnterTaskDateUtil.enterTaskDate(scanner, currentDate);
         builder.withDateOfComplition(taskDate);
 

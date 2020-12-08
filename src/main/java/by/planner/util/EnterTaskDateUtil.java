@@ -1,5 +1,6 @@
 package by.planner.util;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.YearMonth;
 import java.util.Scanner;
@@ -8,13 +9,28 @@ public class EnterTaskDateUtil{
 
     public static LocalDateTime enterTaskDate(Scanner scanner, LocalDateTime currentDate){
         LocalDateTime taskDate;
-        int year = checkNumber(scanner, currentDate.getYear(), currentDate.getYear() + 1, "year");
-        int month = checkNumber(scanner, currentDate.getMonthValue(), 12, "month");
+
+        int currentYear = currentDate.getYear();
+        int year = checkNumber(scanner, currentYear, currentYear + 1, "year");
+
+        int currentMonth = currentDate.getMonthValue();
+        int leftBoundMonth = (year == currentYear) ? currentMonth : 1;
+        int month = checkNumber(scanner, leftBoundMonth, 12, "month");
+
+        int currentDay = currentDate.getDayOfMonth();
         YearMonth yearMonth = YearMonth.of(year, month);
-        int daysInMonth = yearMonth.lengthOfMonth();
-        int day = checkNumber(scanner, currentDate.getDayOfMonth(), daysInMonth, "day");
-        int hour = checkNumber(scanner, currentDate.getHour(), 23, "hour");
-        int minute = checkNumber(scanner, currentDate.getMinute(), 59, "minute");
+        int leftBoundDay = (year == currentYear && month == currentMonth) ? currentDay : 1;
+        int day = checkNumber(scanner, leftBoundDay, yearMonth.lengthOfMonth(), "day");
+
+        int currentHour = currentDate.getHour();
+        int leftBoundHour = (year == currentYear && month == currentMonth && day == currentDay)
+                ? currentHour : 0;
+        int hour = checkNumber(scanner, leftBoundHour, 23, "hour");
+
+        int leftBoundMin = (year == currentYear && month == currentMonth && day == currentDay && hour == currentHour)
+                ? (currentDate.getMinute() + 1) : 0;
+        int minute = checkNumber(scanner, leftBoundMin, 59, "minute");
+
         taskDate = LocalDateTime.of(year, month, day, hour, minute);
         return taskDate;
     }

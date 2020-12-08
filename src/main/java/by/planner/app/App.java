@@ -85,7 +85,7 @@ public class App{
                     break;
                 case "a":
                     System.out.println("Pressed 'a':");
-                    TaskToPerform.addNewTask(scanner, taskToPerformList, now);
+                    TaskToPerform.addNewTask(scanner, taskToPerformList);
                     break;
                 case "s":
                     System.out.println("Pressed 's':");
