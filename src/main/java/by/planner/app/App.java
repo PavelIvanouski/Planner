@@ -1,11 +1,15 @@
 package by.planner.app;
 
+import by.planner.database.DB;
 import by.planner.domain.*;
 import by.planner.features.Category;
 import by.planner.features.Priority;
+import by.planner.util.DeserializationUtil;
 import by.planner.util.ReturnUtil;
 import by.planner.features.TaskType;
+import by.planner.util.SerializationUtil;
 
+import java.lang.reflect.Array;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
@@ -17,6 +21,8 @@ public class App{
     final static String DEADLINE_DATE = "2020-12-07T23:59:00";
 
     public static void main(String[] args){
+
+
         LocalDateTime now = LocalDateTime.now();
         System.out.println("now: " + DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM).format(now));
         LocalDateTime deadlineDate = LocalDateTime.parse(DEADLINE_DATE);
@@ -26,44 +32,52 @@ public class App{
         System.out.println(ReturnUtil.returnTwoDateDifference(now, deadlineDate));
         System.out.println();
 
-        TaskToPerform.Builder<Integer> builder1 = new TaskToPerform.Builder<>();
-        builder1.withName("To watch a movie");
-        builder1.withCategory(Category.CHILLOUT);
-        builder1.withPriority(Priority.OPTIONAL);
-        builder1.withTaskType(TaskType.ONE_TIME);
-        builder1.withDateOfComplition(now);
-        builder1.withTimeToComplete(120);
-        builder1.withId(13133);
-        TaskToPerform<Integer> Task1 = builder1.build();
-
-        TaskToPerform.Builder<Integer> builder2 = new TaskToPerform.Builder<>();
-        builder2.withName("To sleep");
-        builder2.withCategory(Category.CHILLOUT);
-        builder2.withPriority(Priority.IMPORTANT);
-        builder2.withTaskType(TaskType.ONE_TIME);
-        //today evening
-        LocalDateTime todayEvening = LocalDateTime.of(LocalDate.now(), LocalTime.of(23, 00));
-        builder2.withDateOfComplition(todayEvening);
-        builder2.withTimeToComplete(120);
-        builder2.withId(13133);
-        TaskToPerform<Integer> Task2 = builder2.build();
-
-        TaskToPerform.Builder<Integer> builder3 = new TaskToPerform.Builder<>();
-        builder3.withName("To sleep");
-        builder3.withCategory(Category.CHILLOUT);
-        builder3.withPriority(Priority.IMPORTANT);
-        builder3.withTaskType(TaskType.ONE_TIME);
-        //tomorrow evening
-        builder3.withDateOfComplition(todayEvening.plusDays(1));
-        builder3.withTimeToComplete(120);
-        builder3.withId(13133);
-        TaskToPerform<Integer> Task3 = builder3.build();
+//        TaskToPerform.Builder<Integer> builder1 = new TaskToPerform.Builder<>();
+//        builder1.withName("To watch a movie");
+//        builder1.withCategory(Category.CHILLOUT);
+//        builder1.withPriority(Priority.OPTIONAL);
+//        builder1.withTaskType(TaskType.ONE_TIME);
+//        builder1.withDateOfComplition(now);
+//        builder1.withTimeToComplete(120);
+//        builder1.withId(13133);
+//        TaskToPerform<Integer> Task1 = builder1.build();
+//
+//        TaskToPerform.Builder<Integer> builder2 = new TaskToPerform.Builder<>();
+//        builder2.withName("To sleep");
+//        builder2.withCategory(Category.CHILLOUT);
+//        builder2.withPriority(Priority.IMPORTANT);
+//        builder2.withTaskType(TaskType.ONE_TIME);
+//        //today evening
+//        LocalDateTime todayEvening = LocalDateTime.of(LocalDate.now(), LocalTime.of(23, 00));
+//        builder2.withDateOfComplition(todayEvening);
+//        builder2.withTimeToComplete(120);
+//        builder2.withId(13133);
+//        TaskToPerform<Integer> Task2 = builder2.build();
+//
+//        TaskToPerform.Builder<Integer> builder3 = new TaskToPerform.Builder<>();
+//        builder3.withName("To sleep");
+//        builder3.withCategory(Category.CHILLOUT);
+//        builder3.withPriority(Priority.IMPORTANT);
+//        builder3.withTaskType(TaskType.ONE_TIME);
+//        //tomorrow evening
+//        builder3.withDateOfComplition(todayEvening.plusDays(1));
+//        builder3.withTimeToComplete(120);
+//        builder3.withId(13133);
+//        TaskToPerform<Integer> Task3 = builder3.build();
 
 
         List<TaskToPerform> taskToPerformList = new ArrayList<>();
-        taskToPerformList.add(Task1);
-        taskToPerformList.add(Task2);
-        taskToPerformList.add(Task3);
+
+        Object deserializedObject = DeserializationUtil.deserializeObject(SerializationUtil.FILENAME);
+        if (deserializedObject instanceof ArrayList) {
+            taskToPerformList = (ArrayList<TaskToPerform>) deserializedObject;
+            System.out.println("Tasks were loaded.");
+        }
+
+//        taskToPerformList.add(Task1);
+//        taskToPerformList.add(Task2);
+//        taskToPerformList.add(Task3);
+
         taskToPerformList.forEach(System.out::println);
 
         Scanner scanner = new Scanner(System.in);
@@ -99,6 +113,7 @@ public class App{
                     break;
                 case "x":
                     System.out.println("Pressed 'x'. Exit...");
+                    DB.SaveDb(taskToPerformList);
                     break;
                 case "f":
                     System.out.println("Pressed 'f'. All INPORTANT tasks:");

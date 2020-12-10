@@ -8,6 +8,7 @@ import by.planner.util.EnterTaskDateUtil;
 import by.planner.util.ReturnUtil;
 import by.planner.features.TaskType;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
@@ -16,7 +17,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Scanner;
 
-public class TaskToPerform<T> implements Performable, Comparable<TaskToPerform>{
+public class TaskToPerform<T> implements Performable, Comparable<TaskToPerform>, Serializable{
 
     private String name;
     private Category category;
@@ -27,6 +28,7 @@ public class TaskToPerform<T> implements Performable, Comparable<TaskToPerform>{
     private Integer timeToComplete;
     private Integer numberOfRepeats;
     private T id;
+    private static final long serialVersionUID = 1L;
 
     public static class Builder<T>{
 
