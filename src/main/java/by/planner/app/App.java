@@ -1,15 +1,11 @@
 package by.planner.app;
 
-import by.planner.database.DB;
 import by.planner.domain.*;
-import by.planner.features.Category;
 import by.planner.features.Priority;
 import by.planner.util.DeserializationUtil;
 import by.planner.util.ReturnUtil;
-import by.planner.features.TaskType;
 import by.planner.util.SerializationUtil;
 
-import java.lang.reflect.Array;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
@@ -113,7 +109,8 @@ public class App{
                     break;
                 case "x":
                     System.out.println("Pressed 'x'. Exit...");
-                    DB.SaveDb(taskToPerformList);
+                    SerializationUtil.serializeObject(taskToPerformList, SerializationUtil.FILENAME);
+                    System.out.println("Tasks were saved.");
                     break;
                 case "f":
                     System.out.println("Pressed 'f'. All INPORTANT tasks:");
