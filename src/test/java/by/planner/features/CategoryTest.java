@@ -1,8 +1,6 @@
-package by.planner.util;
+package by.planner.features;
 
 import by.planner.exceptions.TaskCheckedException;
-import by.planner.features.Category;
-import by.planner.features.Priority;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
@@ -11,11 +9,9 @@ import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
 
 @RunWith(Theories.class)
-public class EnumUtilTest{
-
+public class CategoryTest{
     @Rule
     public ExpectedException expectedExceptionRule = ExpectedException.none();
 
@@ -29,7 +25,7 @@ public class EnumUtilTest{
         //GIVEN
 
         //WHEN
-        Category category = EnumUtil.returnCategory(input);
+        Category category = Category.returnCategory(input);
 
         //THEN
         Assert.assertEquals(Category.CHILLOUT, category);
@@ -42,23 +38,11 @@ public class EnumUtilTest{
         int categoryNum = 0;
 
         //WHEN
-        Category category = EnumUtil.returnCategory(categoryNum);
+        Category category = Category.returnCategory(categoryNum);
 
         //THEN
 
     }
 
 
-    @Test
-    public void testreturnPriorityPositive() throws TaskCheckedException{
-        //GIVEN
-        int priorityNum = 1;
-
-        //WHEN
-        Priority priority = EnumUtil.returnPriority(priorityNum);
-
-        //THEN
-        Assert.assertEquals(Priority.IMPORTANT, priority);
-        Assert.assertNotEquals(Priority.OPTIONAL, priority);
-    }
 }
