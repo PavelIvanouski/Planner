@@ -5,7 +5,7 @@ import by.planner.exceptions.TaskUncheckedException;
 import by.planner.features.Category;
 import by.planner.features.Priority;
 import by.planner.util.EnterTaskDateUtil;
-import by.planner.util.ReturnUtil;
+import by.planner.util.EnumUtil;
 import by.planner.features.TaskType;
 
 import java.io.Serializable;
@@ -282,7 +282,7 @@ public class TaskToPerform<T> implements Performable, Comparable<TaskToPerform>,
         Category categoryNewTask;
         categoryNewTask = null;
         try {
-            categoryNewTask = ReturnUtil.returnCategory(categoryNum);
+            categoryNewTask = EnumUtil.returnCategory(categoryNum);
         } catch (TaskCheckedException e) {
             e.printStackTrace();
             categoryNewTask = Category.CHILLOUT;
@@ -295,7 +295,7 @@ public class TaskToPerform<T> implements Performable, Comparable<TaskToPerform>,
         int priorityNum = scanner.nextInt();
         Priority priorityNewTask;
         try {
-            priorityNewTask = ReturnUtil.returnPriority(priorityNum);
+            priorityNewTask = EnumUtil.returnPriority(priorityNum);
         } catch (Exception e) {
             e.printStackTrace();
             priorityNewTask = Priority.MIDDLE;

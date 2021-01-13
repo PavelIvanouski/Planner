@@ -2,7 +2,7 @@ package by.planner.app;
 
 import by.planner.domain.*;
 import by.planner.features.Priority;
-import by.planner.util.ReturnUtil;
+import by.planner.util.DateUtil;
 import by.planner.util.SerializationUtil;
 
 import java.time.*;
@@ -16,16 +16,14 @@ public class App{
     final static String DEADLINE_DATE = "2020-12-07T23:59:00";
 
     public static void main(String[] args){
-        LocalDateTime firstDate = LocalDateTime.parse("2021-01-11T10:00:00");
-        LocalDateTime secondDate = LocalDateTime.parse("2021-01-11T12:30:00");
-        System.out.println(ReturnUtil.returnTwoDateDifference(firstDate,secondDate));
+
         LocalDateTime now = LocalDateTime.now();
         System.out.println("now: " + DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM).format(now));
         LocalDateTime deadlineDate = LocalDateTime.parse(DEADLINE_DATE);
         System.out.println("Deadline date: " +
                 DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM).format(deadlineDate));
 
-        System.out.println(ReturnUtil.returnTwoDateDifference(now, deadlineDate));
+        System.out.println(DateUtil.returnTwoDateDifference(now, deadlineDate));
         System.out.println();
 
 //        TaskToPerform.Builder<Integer> builder1 = new TaskToPerform.Builder<>();
